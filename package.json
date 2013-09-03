@@ -1,0 +1,13 @@
+{
+  "name": "twitter-checkpoint",
+  "version": "0.0.0",
+  "description": "Filter tweets",
+  "main": "index.js",
+  "author": "Jonathan Kim",
+  "license": "BSD",
+  "dependencies": {
+    "ntwitter": "~0.5.0",
+    "q": "~0.9.6",
+    "nstore": "~0.5.2"
+  }
+}
