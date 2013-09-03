@@ -22,6 +22,8 @@ q.promise.then(function() {
   twit.get('/favorites/list.json', function(err, data) {
     var promises = [];
 
+    if(err) throw err;
+
     data.forEach(function(tweet) {
       var defer = Q.defer();
       tweets.find({ id: tweet.id }, function(err, result) {
