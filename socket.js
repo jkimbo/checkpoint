@@ -54,29 +54,13 @@ Socket.prototype.broadcast = function(data) {
  * data - data to send
  */
 Socket.prototype.redact = function(data) {
-  /*if (data instanceof Array) {
-    this.buffer = _.filter(this.buffer, function(obj) {
-      var check = _.find(data, function(d) {
-        return d.target_object.id === obj.target_object.id;
-      });
+  this.buffer = _.filter(this.buffer, function(obj) {
+    if (data.id === obj.id) {
+      return false;
+    }
+    return true;
+  });
 
-      // if in buffer
-      if (check !== undefined) {
-        return false;
-      }
-
-      return true;
-    });
-  } else {
-    this.buffer = _.filter(this.buffer, function(obj) {
-      if (d.target_object.id === obj.target_object.id) {
-        return false;
-      }
-      return true;
-    });
-  }*/
-
-  this.buffer = _.without(this.buffer, data); // add data to buffer
   this.io.sockets.emit(this.channel, {redact: true, data: data});
 };
 
