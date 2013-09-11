@@ -5,6 +5,7 @@ var socket = require('socket.io');
 var _ = require('lodash');
 
 var Socket = function() {
+  this.maxBufSize = 20;
 };
 
 /**
@@ -21,7 +22,7 @@ Socket.prototype.initialize = function(port, buffer, cb, channel) {
 
   this.io.set('log level', 1);
 
-  if (typeof channel === 'undefined') {
+  if (typeof channel === 'undefined' || channel === null) {
     this.channel = 'event';
   } else this.channel = channel;
 
@@ -45,6 +46,7 @@ Socket.prototype.broadcast = function(data) {
   } else {
     this.buffer.push(data); // add data to buffer
   }
+  this.limitBuffer();
   this.io.sockets.emit(this.channel, data);
 };
 
@@ -62,6 +64,19 @@ Socket.prototype.redact = function(data) {
   });
 
   this.io.sockets.emit(this.channel, {redact: true, data: data});
+};
+
+/**
+ * Limit buffer
+ * Reduce size of buffer till it is within the maxBufSize
+ */
+Socket.prototype.limitBuffer = function() {
+  if (this.buffer.length > this.maxBufSize) {
+    var diff = this.buffer.length - this.maxBufSize;
+    for (var i = 0; i < diff; i++) {
+      this.buffer.splice(0, 1);
+    }
+  }
 };
 
 module.exports = Socket;

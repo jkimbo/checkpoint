@@ -4,5 +4,7 @@ module.exports = {
     consumer_secret: 'API',
     access_token_key: 'keys',
     access_token_secret: 'go here'
-  }
+  },
+  port: 9000, // socket.io port [default: 8888]
+  channel: 'tweets', // socket.io channel [default: 'event']
 };
